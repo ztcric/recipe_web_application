@@ -4,6 +4,7 @@ import com.cliff.recipe.domain.*;
 import com.cliff.recipe.repositories.CategoryRepository;
 import com.cliff.recipe.repositories.RecipeRepository;
 import com.cliff.recipe.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Component
 public class RecipeBootStrap implements ApplicationListener<ContextRefreshedEvent> {
     private final CategoryRepository categoryRepository;
@@ -30,6 +31,7 @@ public class RecipeBootStrap implements ApplicationListener<ContextRefreshedEven
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         recipeRepository.saveAll(getRecipes());
+        log.debug("Loading Bootstrap Data!!");
     }
 
     private List<Recipe> getRecipes(){
@@ -122,7 +124,6 @@ public class RecipeBootStrap implements ApplicationListener<ContextRefreshedEven
                 "\n" +
                 "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws");
         guacRecipe.setNotes(guacNotes);
-        guacNotes.setRecipe(guacRecipe);
 
         guacRecipe.addIngredient(new Ingredient("ripe avocados", new BigDecimal(2), eachUom));
         guacRecipe.addIngredient(new Ingredient("Kosher salt", new BigDecimal(".5"), teaspoonUom));
@@ -172,7 +173,6 @@ public class RecipeBootStrap implements ApplicationListener<ContextRefreshedEven
 
 
         tacosRecipe.setNotes(tacoNotes);
-        tacoNotes.setRecipe(tacosRecipe);
 
         tacosRecipe.addIngredient(new Ingredient("Ancho Chili Powder", new BigDecimal(2), tableSpoonUom));
         tacosRecipe.addIngredient(new Ingredient("Dried Oregano", new BigDecimal(1), teaspoonUom));
